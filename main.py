@@ -1,5 +1,30 @@
 import random
 import pandas
+from jinja2 import Template
+
+t = Template('''
+<html>
+  <body>
+    <table border="1">
+
+      <tr>
+      {%- for col in header %}
+        <td>{{col}}</td>
+      {%- endfor %}
+      </tr>
+
+      {% for row in rows -%}
+      <tr>
+      {%- for col in row %}
+        <td>{{col if col is not none else '' }}</td>
+      {%- endfor %}
+      </tr>
+      {% endfor %}
+
+    </table>
+  </body>
+</html>
+''')
 
 class Jogo:
     def __init__(self, dezenas, total):
@@ -67,8 +92,12 @@ class Jogo:
 
             tabela_final.append([jogo, ac])
 
-        data = pandas.DataFrame(tabela_final, columns=['Jogo', 'Acertos'])
-        html = data.to_html()
+        #data = pandas.DataFrame(tabela_final, columns=['Jogo', 'Acertos'])
+        #html = data.to_html()
+        header = ['Jogo', 'Acertos']
+        rows = tabela_final
+
+        html = t.render(header=header, rows=rows)
         return html
 
 
@@ -77,6 +106,8 @@ j = Jogo(10,5)
 j.add_jogos()
 j.sorteio()
 html = j.resultado_final()
+
+print(html)
 print(html)
 with open('tabela.html',  'w') as tabela:
     tabela.write(html)
