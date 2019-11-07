@@ -1,5 +1,4 @@
 import random
-import pandas
 from jinja2 import Template
 
 t = Template('''
@@ -25,6 +24,8 @@ t = Template('''
   </body>
 </html>
 ''')
+
+
 
 class Jogo:
     def __init__(self, dezenas, total):
@@ -92,8 +93,7 @@ class Jogo:
 
             tabela_final.append([jogo, ac])
 
-        #data = pandas.DataFrame(tabela_final, columns=['Jogo', 'Acertos'])
-        #html = data.to_html()
+
         header = ['Jogo', 'Acertos']
         rows = tabela_final
 
